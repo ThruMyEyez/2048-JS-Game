@@ -43,7 +43,7 @@ function moveUp() {
 }
 
 function slideTiles(cells) {
-  cells.array.forEach((group) => {
+  cells.forEach(group => {
     for (let i = 1; i < group.length; i++) {
       const cell = group[i];
       let lastValidCell;
