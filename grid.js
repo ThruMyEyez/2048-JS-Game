@@ -25,6 +25,16 @@ export default class Grid {
         );
     });
   }
+    /* make a privat getter to get all empty cells */
+  get #emptyCells() {
+    return this.#cells.filter(cell => cell.tile == null);
+  }
+  /* function to get random empty cells */
+  randomEmptyCell() {
+    const randomIndex = Math.floor(Math.random() * this.#emptyCells.length);
+    return this.#emptyCells[randomIndex];
+  }
+
 }
 
 class Cell {
@@ -32,10 +42,14 @@ class Cell {
   #cellElement;
   #x
   #y
+  #tile
   constructor(cellElement, x, y) {
     this.#cellElement = cellElement;
     this.#x = x;
     this.#y = y;
+  } 
+  get tile() {
+    return this.#tile
   }
 }
 
