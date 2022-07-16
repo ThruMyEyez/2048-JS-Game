@@ -25,6 +25,14 @@ export default class Grid {
         );
     });
   }
+  //make a getter for cellsByColumn
+  get cellsByColumn() {
+    return this.#cells.reduce((cellGrid, cell) => {
+      cellGrid[cell.x] = cellGrid[cell.x] || [];
+      cellGrid[cell.x][cell.y] = cell;
+      return cellGrid;
+    }, []); //array of array, first var x represents row, the y the columns
+  }
     /* make a privat getter to get all empty cells */
   get #emptyCells() {
     return this.#cells.filter(cell => cell.tile == null);
@@ -48,6 +56,14 @@ class Cell {
     this.#x = x;
     this.#y = y;
   } 
+  //creating getters for x and y because there are privat =>
+  get x() {
+    return this.#x;
+  }
+  get y() {
+    return this.#y
+  }
+
   get tile() {
     return this.#tile
   }
