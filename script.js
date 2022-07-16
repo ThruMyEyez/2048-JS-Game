@@ -39,13 +39,23 @@ function handleInput(e) {
 }
 
 function moveUp() {
-  slideTiles(grid.cellsByColumn);
+ return slideTiles(grid.cellsByColumn);
 }
+function moveDown() {
+  return slideTiles(grid.cellsByColumn.map(column => [...column].reverse()));
+}
+function moveLeft() {
+  return slideTiles(grid.cellsByRow);
+ }
+ function moveRight() {
+  return slideTiles(grid.cellsByRow.map(row => [...row].reverse()));
+ }
 
 function slideTiles(cells) {
   cells.forEach(group => {
     for (let i = 1; i < group.length; i++) {
       const cell = group[i];
+      if (cell.tile == null) continue;
       let lastValidCell;
       for (let j = i - 1; j >= 0; j--) {
         const moveToCell = group[j];
@@ -63,8 +73,6 @@ function slideTiles(cells) {
     }
   });
 }
-function moveDown() {
-  slideTiles();
-}
+
 
 
