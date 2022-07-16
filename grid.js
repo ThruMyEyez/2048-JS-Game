@@ -51,6 +51,13 @@ class Cell {
   get tile() {
     return this.#tile
   }
+  //setter for moving to new position
+  set tile(value) {
+    this.#tile = value;
+    if (value == null) return;
+    this.#tile.x = this.#x;
+    this.#tile.y = this.#y;
+  }
 }
 
 //function create cell elements is going to create all of the cell elements
