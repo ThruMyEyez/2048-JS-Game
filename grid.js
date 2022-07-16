@@ -11,19 +11,27 @@ export default class Grid {
   /* define the private #cells variable outside the constructor, so it can ONLY be 
   accessed ny the "Grid" class. this way only indivdual elements inside of all the cells 
   at once and it cant be overwritten from outside the grid class. */
-  #cells
+  #cells;
   constructor(gridElement) {
     gridElement.style.setProperty("--grid-size", GRID_SIZE);
-    gridElement.style.setProperty("--cell-size", `${CELL_SIZE}vmin`); 
-    gridElement.style.setProperty("--cell-gap", `${CELL_GAP}vmin`); 
+    gridElement.style.setProperty("--cell-size", `${CELL_SIZE}vmin`);
+    gridElement.style.setProperty("--cell-gap", `${CELL_GAP}vmin`);
     //adding a method for creating cell elements
     this.#cells = createCellElements(gridElement).map((cellElement, index) => {
       return new Cell(
-        cellElement, 
-        index % GRID_SIZE, 
+        cellElement,
+        index % GRID_SIZE,
         Math.floor(index / GRID_SIZE)
-        );
+      );
     });
+  }
+  //make a getter for cellsByRow
+  get cellsByRow() {
+    return this.#cells.reduce((cellGrid, cell) => {
+      cellGrid[cell.y] = cellGrid[cell.y] || [];
+      cellGrid[cell.y][cell.x] = cell;
+      return cellGrid;
+    }, []);
   }
   //make a getter for cellsByColumn
   get cellsByColumn() {
@@ -33,40 +41,39 @@ export default class Grid {
       return cellGrid;
     }, []); //array of array, first var x represents row, the y the columns
   }
-    /* make a privat getter to get all empty cells */
+  /* make a privat getter to get all empty cells */
   get #emptyCells() {
-    return this.#cells.filter(cell => cell.tile == null);
+    return this.#cells.filter((cell) => cell.tile == null);
   }
   /* function to get random empty cells */
   randomEmptyCell() {
     const randomIndex = Math.floor(Math.random() * this.#emptyCells.length);
     return this.#emptyCells[randomIndex];
   }
-
 }
 
 class Cell {
   /* defining the Cell variables as privat vars so it cant be modif. by outside class */
   #cellElement;
-  #x
-  #y
-  #tile
-  #mergeTile
+  #x;
+  #y;
+  #tile;
+  #mergeTile;
   constructor(cellElement, x, y) {
     this.#cellElement = cellElement;
     this.#x = x;
     this.#y = y;
-  } 
+  }
   //creating getters for x and y because there are privat =>
   get x() {
     return this.#x;
   }
   get y() {
-    return this.#y
+    return this.#y;
   }
 
   get tile() {
-    return this.#tile
+    return this.#tile;
   }
   //setter for moving to new position
   set tile(value) {
@@ -89,7 +96,8 @@ class Cell {
 
   canAccept(tile) {
     return (
-      this.tile == null || (this.mergeTile == null && this.tile.value === tile.value)
+      this.tile == null ||
+      (this.mergeTile == null && this.tile.value === tile.value)
     );
   }
 }
