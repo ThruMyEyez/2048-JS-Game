@@ -56,9 +56,17 @@ async function handleInput(e) {
   const newTile = new Tile(gameBoard)
   grid.randomEmptyCell().tile = newTile;
 
+  //add handler for loose game state =>
+  if (!canMoveUp() && !canMoveDown() && !canMoveLeft() && !canMoveRight()) {
+    newTile.waitForTransition(true).then(() => {
+      alert("You looose.. Verloren!")
+    });
+    return
+  }
+
   setupInput();
 }
-
+// canMove checker functionss
 function moveUp() {
  return slideTiles(grid.cellsByColumn);
 }
