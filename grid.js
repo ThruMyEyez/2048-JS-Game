@@ -8,14 +8,37 @@ const CELL_GAP = 1;
 --cell-gap: 2vmin;
 */
 export default class Grid {
+  /* define the private #cells variable outside the constructor, so it can ONLY be 
+  accessed ny the "Grid" class. this way only indivdual elements inside of all the cells 
+  at once and it cant be overwritten from outside the grid class. */
+  #cells
   constructor(gridElement) {
     gridElement.style.setProperty("--grid-size", GRID_SIZE);
     gridElement.style.setProperty("--cell-size", `${CELL_SIZE}vmin`); 
     gridElement.style.setProperty("--cell-gap", `${CELL_GAP}vmin`); 
     //adding a method for creating cell elements
-    createCellElements(gridElement) 
+    this.#cells = createCellElements(gridElement).map((cellElement, index) => {
+      return new Cell(
+        cellElement, 
+        index % GRID_SIZE, 
+        Math.floor(index / GRID_SIZE)
+        );
+    });
   }
 }
+
+class Cell {
+  /* defining the Cell variables as privat vars so it cant be modif. by outside class */
+  #cellElement;
+  #x
+  #y
+  constructor(cellElement, x, y) {
+    this.#cellElement = cellElement;
+    this.#x = x;
+    this.#y = y;
+  }
+}
+
 //function create cell elements is going to create all of the cell elements
 //and return them => "one cell = <div class="cell"><div>"
 function createCellElements(gridElement) {
@@ -23,6 +46,7 @@ function createCellElements(gridElement) {
   for (let i = 0; i < GRID_SIZE * GRID_SIZE; i++) {
     const cell = document.createElement("div");
     cell.classList.add("cell");
+    cells.push(cell);
     gridElement.append(cell);
   }
   return cells;
