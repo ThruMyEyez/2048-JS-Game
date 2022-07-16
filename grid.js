@@ -25,6 +25,10 @@ export default class Grid {
       );
     });
   }
+
+  get cells() {
+    return this.#cells;
+  }
   //make a getter for cellsByRow
   get cellsByRow() {
     return this.#cells.reduce((cellGrid, cell) => {
@@ -99,6 +103,12 @@ class Cell {
       this.tile == null ||
       (this.mergeTile == null && this.tile.value === tile.value)
     );
+  }
+  mergeTiles() {
+    if (this.tile == null || this.mergeTile == null) return;
+    this.#tile.value = this.tile.value + this.tile.value;
+    this.mergeTile.remove();
+    this.mergeTile = null;
   }
 }
 
